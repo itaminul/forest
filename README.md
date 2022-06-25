@@ -1,4 +1,4 @@
 npm init
 npm i express
+npm install -g nodemon
 
-6->express->15 end ->start 16

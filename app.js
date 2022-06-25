@@ -1,10 +1,11 @@
-const fs = require('fs')
 const express = require('express')
 const app = express();
 app.use(express.json())
+const userRouter = require('./routes/usersRouters')
+const tourRouter = require('./routes/toursRouter')
 
 app.use((req,res, next) => {
-    console.log('hello middleware')
+    // console.log('hello middleware')
     next();
 })
 
@@ -13,105 +14,8 @@ app.use((req,res, next) => {
     next();
 })
 
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/tours-simple.json`))
 
-const getAllTours = (req,res) => {
-    console.log(req.reqestTime);
-    res.status(200).json({
-        status: 'success',
-        requestedAtt: req.reqestTime,
-        results: tours.length,
-        data: {
-            tours
-        }
-    })
+  app.use('/api/v1/users', userRouter)
+ app.use('/api/v1/tours', tourRouter)
 
-}
-const createTour = (req,res) => {
-console.log('createTour')
-}
-const getTour = (req,res) => {
-    console.log('createTour')
-    }
-    
-const updateTour = (req,res) => {
-    console.log('createTour')
-    }
-const deleteTour = (req,res) => {
-    console.log('createTour')
-    }
-            
-        
-
-// app.post('/api/v1/tours',getTours)
-// app.post('/api/v1/tours/:id',updateTours)
-// app.post('/api/v1/tours/:id', deleteTours)
-
-app
-.route('/api/v1/tours')
-.get(getAllTours)
-.post(createTour);
-
-app
-.route('/api/v1/tours/:id')
-.get(getTour)
-.patch(updateTour)
-.delete(deleteTour);
-
-
-const getAllUsers = (req,res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'This route is not yes default'
-    })
-}
-
-const createUser = (req,res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'This route is not yes default'
-    })
-}
-
-const getUser = (req,res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'This route is not yes default'
-    })
-}
-const updateUser = (req,res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'This route is not yes default'
-    })
-}
-
-const deleteUser = (req,res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'This route is not yes default'
-    })
-}
-
-const tourRouter = express.Router()
-const userRouter = express.Router()
-userRouter
-.route('/')
-.get(getAllUsers)
-.post(createUser)
-
-userRouter
-.route('/:id')
-.get(getUser)
-.patch(updateUser)
-.delete(deleteUser)
-
-app.use('/api/v1/tours', tourRouter)
- app.use('/api/v1/user', userRouter)
-
-
-
-const port = 8002;
-app.listen(port, () => {
-    console.log(`App running on port ${port}...`);
-})
+module.exports = app;
