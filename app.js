@@ -1,11 +1,17 @@
 const express = require('express')
 const app = express();
-app.use(express.json())
+const morgan = require('morgan')
 const userRouter = require('./routes/usersRouters')
 const tourRouter = require('./routes/toursRouter')
 
+// console.log(process.env.NODE_ENV)
+if(process.env.NODE_ENV === 'development'){
+app.use(morgan('dev'));
+}
+app.use(express.json())
+app.use(express.static(`${__dirname}/public`))
 app.use((req,res, next) => {
-    // console.log('hello middleware')
+     console.log('hello middleware')
     next();
 })
 
