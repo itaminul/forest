@@ -4,18 +4,13 @@ const tourController = require('../controllers/tourController')
 
 //  router.param('id', tourController.checkId)
 
-router
-    .route('/')
-    .get(tourController.getAllTours)
-    .post(tourController.checkBody,tourController.createTour);
+router.route('/getAll').get(tourController.getAllTours)
+router.route('/create').post(tourController.createTour);
 
-router
-    .route('/:id')
-    .get(tourController.getTour)
-    .patch(tourController.updateTour)
-    .delete(tourController.deleteTour);
-
-    module.exports = router
+router.route('/getTourById/:id').get(tourController.getTour)
+router.route('/update/:id').patch(tourController.updateTour)
+router.route('/delete/:id').delete(tourController.deleteTour);
+module.exports = router
 
 
 
