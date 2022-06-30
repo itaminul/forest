@@ -1,8 +1,9 @@
+const fs = require('fs')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
-
-dotenv.config({ path: './config.env'})
+const Tour = require('./../models/toureModel')
 const app = require('./app')
+dotenv.config({ path: './config.env'})
 // console.log(process.env)
 
 const DB = process.env.DATABASE.replace(
@@ -19,7 +20,14 @@ mongoose.connect(DB, {
     console.log('Db connection success')
 })
 
-const port = process.env.PORT ||  8002;
-app.listen(port, () => {
-    console.log(`App running on port ${port}...`);
-})
+const tours = JSON.parse(fs.readFileSync('tours-sample.json', 'utf-8'))
+
+const importData = async () => {
+    try {
+        await Tour.create(tours)
+        console.log('Data successfully loaded')
+    } catch (error) {
+        console.log(error)
+        
+    }
+}

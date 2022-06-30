@@ -23,7 +23,26 @@ exports.checkBody = (req, res, next) => {
 
 exports.getAllTours = async(req,res) => {
     try {
-        const tours = await Tour.find()
+        //build query
+        const queryObj = { ...req.query}
+        const excludedFields = ['page', 'sort', 'limit', 'fields']
+        excludedFields.forEach(el => delete queryObj[el])
+        const query = Tour.find(queryObj)
+
+        //execute query
+        const tours = await query
+        // console.log(req.query)
+        // const tours = await Tour.find({
+        //     duration: 5,
+        //     price: 497
+        // })
+
+        // const tours = await Tour.find()
+        // .where('duration')
+        // .equals(5)
+        // .where('price')
+        // .equals(10)
+
         res.status(200).json({
             status: 'success',
             results: tours.length,
@@ -55,7 +74,7 @@ exports.createTour = async(req,res) => {
     } catch (error) {
         res.status(400).json({
         status: 'fail',
-        message: 'Invalied data send'
+        message: error
         })        
     }
 }
